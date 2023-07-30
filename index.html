@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Polygon Grid Mapper with Place Indication</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg"></script>
+  <script src="./support.js"></script>
+</head>
+<body onload="initMap()">
+  <section id="map" style="height: 500px; width: 100%;"></section>
+  <button id="clearBtn">Clear</button>
+  <div id="coordinateList" style="margin-top: 10px;"></div>
+
+  <!-- User Interface for indicating places -->
+  <div style="margin-top: 20px;">
+    <label for="placeType">Select Place Type:</label>
+    <select id="placeType">
+      <option value="Hospital">Hospital</option>
+      <!-- Add more place types here -->
+    </select>
+    <button onclick="indicatePlaces()">Show Hospitals</button>
+  </div>
+  <div id="hospitalCount"></div>
+</body>
+<script>
+  document.getElementById('clearBtn').addEventListener('click', function () {
+    polygon.setMap(null);
+    polygon = new google.maps.Polygon({
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35,
+      editable: true
+    });
+    polygon.setMap(map);
+    document.getElementById("coordinateList").innerHTML = "";
+    google.maps.event.addListener(polygon.getPath(), 'set_at', updateInfoWindow);
+    google.maps.event.addListener(polygon.getPath(), 'insert_at', updateInfoWindow);
+    google.maps.event.addListener(polygon.getPath(), 'remove_at', updateInfoWindow);
+  });
+</script>
+</html>
+
